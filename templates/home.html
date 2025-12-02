@@ -17,7 +17,8 @@
     <br>
 
     <!-- Sorting Links -->
-    <p>Sort by:
+    <p>
+      Sort by:
       <a href="/?sort=title">Title</a> |
       <a href="/?sort=author">Author</a>
     </p>
@@ -34,9 +35,11 @@
       <div style="margin-bottom: 20px;">
 
         {% if book.isbn %}
-          <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
-               alt="Cover"
-               style="height:150px;">
+          <img
+            src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+            alt="Cover"
+            style="height: 150px;"
+          >
         {% endif %}
 
         <h3>
@@ -45,16 +48,20 @@
         </h3>
 
         <!-- Delete Author -->
-        <form action="/author/{{ book.author.id }}/delete"
-              method="POST"
-              style="display:inline;">
+        <form
+          action="/author/{{ book.author.id }}/delete"
+          method="POST"
+          style="display: inline;"
+        >
           <button type="submit">Delete Author</button>
         </form>
 
         <!-- Delete Book -->
-        <form action="/book/{{ book.id }}/delete"
-              method="POST"
-              style="display:inline;">
+        <form
+          action="/book/{{ book.id }}/delete"
+          method="POST"
+          style="display: inline;"
+        >
           <button type="submit">Delete Book</button>
         </form>
 

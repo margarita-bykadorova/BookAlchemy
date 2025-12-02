@@ -1,16 +1,24 @@
-from flask import Flask, render_template, request, redirect, url_for
+"""Flask application for a simple digital library."""
+
 import os
+
+from flask import Flask, render_template, request, redirect, url_for
+
 from data_models import db, Author, Book
 
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/library.sqlite')}"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = f"sqlite:///{os.path.join(basedir, 'data/library.sqlite')}"
 
 db.init_app(app)
 
+
 @app.route("/")
 def home():
+    """Render the home page with optional search and sorting."""
     search_query = request.args.get("search")
     sort_option = request.args.get("sort")
     message = request.args.get("message")
@@ -35,17 +43,19 @@ def home():
 
     return render_template("home.html", books=books, message=message)
 
+
 @app.route("/add_author", methods=["GET", "POST"])
 def add_author():
+    """Add a new author or render the add-author form."""
     if request.method == "POST":
         name = request.form["name"]
         birth_date = request.form["birthdate"]
-        date_of_death = request.form.get("date_of_death")  # may be empty
+        date_of_death = request.form.get("date_of_death")  # May be empty
 
         new_author = Author(
             name=name,
             birth_date=birth_date,
-            date_of_death=date_of_death
+            date_of_death=date_of_death,
         )
         db.session.add(new_author)
         db.session.commit()
@@ -54,8 +64,10 @@ def add_author():
 
     return render_template("add_author.html")
 
+
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
+    """Add a new book or render the add-book form."""
     if request.method == "POST":
         title = request.form["title"]
         isbn = request.form["isbn"]
@@ -66,7 +78,7 @@ def add_book():
             title=title,
             isbn=isbn,
             publication_year=publication_year,
-            author_id=author_id
+            author_id=author_id,
         )
 
         db.session.add(new_book)
@@ -74,15 +86,21 @@ def add_book():
 
         message = "Book added successfully!"
         authors = Author.query.all()
-        return render_template("add_book.html", authors=authors, message=message)
+        return render_template(
+            "add_book.html",
+            authors=authors,
+            message=message,
+        )
 
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
 
+
 @app.route("/book/<int:book_id>/delete", methods=["POST"])
 def delete_book(book_id):
+    """Delete a book, and optionally its author if they have no other books."""
     book = Book.query.get_or_404(book_id)
-    author = book.author   # save for later check
+    author = book.author  # Save for later check
 
     db.session.delete(book)
     db.session.commit()
@@ -95,8 +113,10 @@ def delete_book(book_id):
     message = "Book deleted successfully!"
     return redirect(url_for("home", message=message))
 
+
 @app.route("/author/<int:author_id>/delete", methods=["POST"])
 def delete_author(author_id):
+    """Delete an author and all of their books."""
     author = Author.query.get_or_404(author_id)
 
     # Delete all books by this author
@@ -110,8 +130,10 @@ def delete_author(author_id):
     message = "Author and all their books deleted successfully!"
     return redirect(url_for("home", message=message))
 
+
 @app.route("/book/<int:book_id>")
 def book_detail(book_id):
+    """Render a detail page for a single book."""
     book = Book.query.get_or_404(book_id)
     return render_template("book_detail.html", book=book)
 
