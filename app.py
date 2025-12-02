@@ -95,6 +95,11 @@ def delete_book(book_id):
     message = "Book deleted successfully!"
     return redirect(url_for("home", message=message))
 
+@app.route("/book/<int:book_id>")
+def book_detail(book_id):
+    book = Book.query.get_or_404(book_id)
+    return render_template("book_detail.html", book=book)
+
 
 with app.app_context():
     db.create_all()

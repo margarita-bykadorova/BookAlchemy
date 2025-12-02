@@ -26,7 +26,10 @@
         {% if book.isbn %}
           <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover">
         {% endif %}
-        <h3>{{ book.title }} — {{ book.author.name }}</h3>
+        <h3>
+          <a href="/book/{{ book.id }}">{{ book.title }}</a>
+          — {{ book.author.name }}
+        </h3>
           <form action="/book/{{ book.id }}/delete" method="POST" style="display:inline;">
               <button type="submit">Delete</button>
           </form>
