@@ -13,6 +13,7 @@ db.init_app(app)
 def home():
     search_query = request.args.get("search")
     sort_option = request.args.get("sort")
+    message = request.args.get("message")
 
     query = Book.query
 
@@ -28,8 +29,7 @@ def home():
 
     books = query.all()
 
-    # Message for empty results
-    message = None
+    # No results message
     if search_query and not books:
         message = f"No books found matching '{search_query}'."
 
@@ -78,6 +78,22 @@ def add_book():
 
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
+
+@app.route("/book/<int:book_id>/delete", methods=["POST"])
+def delete_book(book_id):
+    book = Book.query.get_or_404(book_id)
+    author = book.author   # save for later check
+
+    db.session.delete(book)
+    db.session.commit()
+
+    # If the author has no more books, delete the author too
+    if len(author.books) == 0:
+        db.session.delete(author)
+        db.session.commit()
+
+    message = "Book deleted successfully!"
+    return redirect(url_for("home", message=message))
 
 
 with app.app_context():
