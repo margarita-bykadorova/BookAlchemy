@@ -1,27 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 import os
+from data_models import db, Author, Book
 
-app = Flask(__name__)   # 1. Create the app
+app = Flask(__name__)
 
-# 2. Build absolute path to database
 basedir = os.path.abspath(os.path.dirname(__file__))
-database_path = os.path.join(basedir, "data", "library.sqlite")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + database_path
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/library.sqlite')}"
 
-# 3. Initialize database
-db = SQLAlchemy(app)
-
-class Author(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    birthdate = db.Column(db.String(10))
-    date_of_death = db.Column(db.String(10))
-
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey("author.id"), nullable=False)
+db.init_app(app)
 
 @app.route("/")
 def home():
