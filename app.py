@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -17,7 +17,8 @@ class Book(db.Model):
 
 @app.route("/")
 def home():
-    return "Home Page"
+    return render_template("home.html")
+
 
 with app.app_context():
     db.create_all()
