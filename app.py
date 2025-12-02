@@ -18,12 +18,12 @@ def home():
 def add_author():
     if request.method == "POST":
         name = request.form["name"]
-        birthdate = request.form["birthdate"]
+        birth_date = request.form["birthdate"]
         date_of_death = request.form.get("date_of_death")  # may be empty
 
         new_author = Author(
             name=name,
-            birthdate=birthdate,
+            birth_date=birth_date,
             date_of_death=date_of_death
         )
         db.session.add(new_author)
@@ -51,3 +51,7 @@ def add_book():
 
 with app.app_context():
     db.create_all()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
