@@ -4,36 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Library</title>
   </head>
   <body>
 
+    <!-- Search Form -->
     <form action="/" method="GET">
       <input type="text" name="search" placeholder="Search books...">
       <button type="submit">Search</button>
-    </form> <br>
+    </form>
 
+    <br>
+
+    <!-- Sorting Links -->
     <p>Sort by:
       <a href="/?sort=title">Title</a> |
       <a href="/?sort=author">Author</a>
     </p>
 
+    <!-- Messages -->
     {% if message %}
       <p>{{ message }}</p>
     {% endif %}
 
+    <hr>
+
+    <!-- List of Books -->
     {% for book in books %}
-      <div>
+      <div style="margin-bottom: 20px;">
+
         {% if book.isbn %}
-          <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover">
+          <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+               alt="Cover"
+               style="height:150px;">
         {% endif %}
+
         <h3>
           <a href="/book/{{ book.id }}">{{ book.title }}</a>
           — {{ book.author.name }}
         </h3>
-          <form action="/book/{{ book.id }}/delete" method="POST" style="display:inline;">
-              <button type="submit">Delete</button>
-          </form>
+
+        <!-- Delete Author -->
+        <form action="/author/{{ book.author.id }}/delete"
+              method="POST"
+              style="display:inline;">
+          <button type="submit">Delete Author</button>
+        </form>
+
+        <!-- Delete Book -->
+        <form action="/book/{{ book.id }}/delete"
+              method="POST"
+              style="display:inline;">
+          <button type="submit">Delete Book</button>
+        </form>
+
       </div>
+      <hr>
     {% endfor %}
 
   </body>
