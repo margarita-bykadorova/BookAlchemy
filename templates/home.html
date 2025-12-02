@@ -7,6 +7,11 @@
   </head>
   <body>
 
+    <p>Sort by:
+      <a href="/?sort=title">Title</a> |
+      <a href="/?sort=author">Author</a>
+    </p>
+
     {% for book in books %}
       <div>
         {% if book.isbn %}
