@@ -7,9 +7,19 @@
   </head>
   <body>
 
-  <form action="/add_author" method="POST">
-  <!-- Add the form here -->
-  </form>
+  <form action="/add_book" method="POST">
+  <label for="title">Book Title:</label>
+  <input type="text" id="title" name="title" required><br><br>
+
+  <label for="author_id">Author:</label>
+  <select id="author_id" name="author_id" required>
+    {% for author in authors %}
+      <option value="{{ author.id }}">{{ author.name }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <input type="submit" value="Add Book">
+</form>
 
   </body>
 </html>
