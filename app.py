@@ -28,7 +28,8 @@ def add_author():
         )
         db.session.add(new_author)
         db.session.commit()
-        return redirect(url_for("home"))
+        message = "Author added successfully!"
+        return render_template("add_author.html", message=message)
 
     return render_template("add_author.html")
 
@@ -36,15 +37,24 @@ def add_author():
 def add_book():
     if request.method == "POST":
         title = request.form["title"]
+        isbn = request.form["isbn"]
+        publication_year = request.form["publication_year"]
         author_id = request.form["author_id"]
 
-        new_book = Book(title=title, author_id=author_id)
+        new_book = Book(
+            title=title,
+            isbn=isbn,
+            publication_year=publication_year,
+            author_id=author_id
+        )
+
         db.session.add(new_book)
         db.session.commit()
 
-        return redirect(url_for("home"))
+        message = "Book added successfully!"
+        authors = Author.query.all()
+        return render_template("add_book.html", authors=authors, message=message)
 
-    # For GET: send the list of authors to the template
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
 

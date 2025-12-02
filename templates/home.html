@@ -8,8 +8,12 @@
   <body>
 
     {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
-    </div>
+      <div>
+        {% if book.isbn %}
+          <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover">
+        {% endif %}
+        <h3>{{ book.title }} — {{ book.author.name }}</h3>
+      </div>
     {% endfor %}
 
   </body>
