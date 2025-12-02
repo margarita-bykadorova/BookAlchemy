@@ -11,16 +11,29 @@ db.init_app(app)
 
 @app.route("/")
 def home():
+    search_query = request.args.get("search")
     sort_option = request.args.get("sort")
 
-    if sort_option == "title":
-        books = Book.query.order_by(Book.title).all()
-    elif sort_option == "author":
-        books = Book.query.join(Author).order_by(Author.name).all()
-    else:
-        books = Book.query.all()
+    query = Book.query
 
-    return render_template("home.html", books=books)
+    # Search filter
+    if search_query:
+        query = query.filter(Book.title.ilike(f"%{search_query}%"))
+
+    # Sorting
+    if sort_option == "title":
+        query = query.order_by(Book.title)
+    elif sort_option == "author":
+        query = query.join(Author).order_by(Author.name)
+
+    books = query.all()
+
+    # Message for empty results
+    message = None
+    if search_query and not books:
+        message = f"No books found matching '{search_query}'."
+
+    return render_template("home.html", books=books, message=message)
 
 @app.route("/add_author", methods=["GET", "POST"])
 def add_author():

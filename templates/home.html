@@ -7,10 +7,19 @@
   </head>
   <body>
 
+    <form action="/" method="GET">
+      <input type="text" name="search" placeholder="Search books...">
+      <button type="submit">Search</button>
+    </form> <br>
+
     <p>Sort by:
       <a href="/?sort=title">Title</a> |
       <a href="/?sort=author">Author</a>
     </p>
+
+    {% if message %}
+      <p>{{ message }}</p>
+    {% endif %}
 
     {% for book in books %}
       <div>
