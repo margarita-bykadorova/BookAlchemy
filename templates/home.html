@@ -48,21 +48,19 @@
         </h3>
 
         <!-- Delete Author -->
-        <form
-          action="/author/{{ book.author.id }}/delete"
-          method="POST"
-          style="display: inline;"
-        >
-          <button type="submit">Delete Author</button>
+        <form action="/author/{{ book.author.id }}/delete"
+              method="POST"
+              style="display:inline;"
+              onsubmit="return confirm('Are you sure you want to delete this author and ALL their books?');">
+            <button type="submit">Delete Author</button>
         </form>
 
         <!-- Delete Book -->
-        <form
-          action="/book/{{ book.id }}/delete"
-          method="POST"
-          style="display: inline;"
-        >
-          <button type="submit">Delete Book</button>
+        <form action="/book/{{ book.id }}/delete"
+              method="POST"
+              style="display:inline;"
+              onsubmit="return confirm('Are you sure you want to delete this book?');">
+            <button type="submit">Delete Book</button>
         </form>
 
       </div>

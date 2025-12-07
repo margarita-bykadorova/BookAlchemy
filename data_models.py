@@ -9,7 +9,7 @@ class Author(db.Model):
     """Model representing an author."""
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False, unique=True)
     birth_date = db.Column(db.String(10))
     date_of_death = db.Column(db.String(10))
 
@@ -31,7 +31,7 @@ class Book(db.Model):
     """Model representing a book."""
 
     id = db.Column(db.Integer, primary_key=True)
-    isbn = db.Column(db.String(20))
+    isbn = db.Column(db.String(20), nullable=False, unique=True)
     title = db.Column(db.String(200), nullable=False)
     publication_year = db.Column(db.Integer)
     author_id = db.Column(

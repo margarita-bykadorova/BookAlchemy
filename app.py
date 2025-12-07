@@ -46,19 +46,25 @@ def home():
 
 @app.route("/add_author", methods=["GET", "POST"])
 def add_author():
-    """Add a new author or render the add-author form."""
     if request.method == "POST":
-        name = request.form["name"]
+        name = request.form["name"].strip()
         birth_date = request.form["birthdate"]
-        date_of_death = request.form.get("date_of_death")  # May be empty
+        date_of_death = request.form.get("date_of_death")
+
+        # Check for duplicate author name
+        existing_author = Author.query.filter_by(name=name).first()
+        if existing_author:
+            message = f"Author '{name}' already exists."
+            return render_template("add_author.html", message=message)
 
         new_author = Author(
             name=name,
             birth_date=birth_date,
-            date_of_death=date_of_death,
+            date_of_death=date_of_death
         )
         db.session.add(new_author)
         db.session.commit()
+
         message = "Author added successfully!"
         return render_template("add_author.html", message=message)
 
@@ -67,18 +73,25 @@ def add_author():
 
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
-    """Add a new book or render the add-book form."""
     if request.method == "POST":
-        title = request.form["title"]
-        isbn = request.form["isbn"]
+        title = request.form["title"].strip()
+        isbn = request.form["isbn"].strip()
         publication_year = request.form["publication_year"]
         author_id = request.form["author_id"]
+
+        # Check for duplicate ISBN
+        if isbn:
+            existing_book = Book.query.filter_by(isbn=isbn).first()
+            if existing_book:
+                authors = Author.query.all()
+                message = f"A book with ISBN {isbn} already exists."
+                return render_template("add_book.html", authors=authors, message=message)
 
         new_book = Book(
             title=title,
             isbn=isbn,
             publication_year=publication_year,
-            author_id=author_id,
+            author_id=author_id
         )
 
         db.session.add(new_book)
@@ -86,11 +99,7 @@ def add_book():
 
         message = "Book added successfully!"
         authors = Author.query.all()
-        return render_template(
-            "add_book.html",
-            authors=authors,
-            message=message,
-        )
+        return render_template("add_book.html", authors=authors, message=message)
 
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
