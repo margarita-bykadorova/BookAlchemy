@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Library</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/add_author">Add Author</a>
+        <a href="/add_book">Add Book</a>
+    </nav>
+    <hr>
 
     <!-- Search Form -->
     <form action="/" method="GET">
@@ -32,44 +40,48 @@
 
     <!-- List of Books -->
     {% for book in books %}
-      <div style="margin-bottom: 20px;">
+    <div class="book-card">
 
-        {% if book.isbn %}
-          <img
-            src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
-            alt="Cover"
-            style="height: 150px;"
-          >
-        {% endif %}
+    {% if book.isbn %}
+      <img
+        src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+        alt="Cover"
+        style="height: 150px;"
+      >
+    {% endif %}
 
-        <h3>
-            <a href="/book/{{ book.id }}">{{ book.title }}</a>
-            — {{ book.author.name }}
-        </h3>
+    <h3>
+      <a href="/book/{{ book.id }}">{{ book.title }}</a>
+      — {{ book.author.name }}
+    </h3>
 
-          {% if book.rating %}
-            <p><strong>Rating:</strong> {{ book.rating }}/10</p>
-          {% endif %}
+    {% if book.rating %}
+      <p><strong>Rating:</strong> {{ book.rating }}/10</p>
+    {% endif %}
 
-        <!-- Delete Author -->
-        <form action="/author/{{ book.author.id }}/delete"
-              method="POST"
-              style="display:inline;"
-              onsubmit="return confirm('Are you sure you want to delete this author and ALL their books?');">
-            <button type="submit">Delete Author</button>
-        </form>
+    <!-- Delete Author -->
+    <form
+      action="/author/{{ book.author.id }}/delete"
+      method="POST"
+      style="display: inline;"
+      onsubmit="return confirm('Are you sure you want to delete this author and ALL their books?');"
+    >
+      <button type="submit">Delete Author</button>
+    </form>
 
-        <!-- Delete Book -->
-        <form action="/book/{{ book.id }}/delete"
-              method="POST"
-              style="display:inline;"
-              onsubmit="return confirm('Are you sure you want to delete this book?');">
-            <button type="submit">Delete Book</button>
-        </form>
+    <!-- Delete Book -->
+    <form
+      action="/book/{{ book.id }}/delete"
+      method="POST"
+      style="display: inline;"
+      onsubmit="return confirm('Are you sure you want to delete this book?');"
+    >
+      <button type="submit">Delete Book</button>
+    </form>
 
-      </div>
-      <hr>
-    {% endfor %}
+    <div style="clear: both;"></div>
+  </div>
+{% endfor %}
 
   </body>
 </html>
