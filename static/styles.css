@@ -67,3 +67,226 @@ form label {
     border-radius: 4px;
     margin-bottom: 15px;
 }
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+header h1 {
+    font-size: 32px;
+    margin: 0;
+    color: #333;
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;   /* poster on top, text below */
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    width: 220px;             /* consistent card width */
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.book-card img {
+    width: 130px;
+    height: 190px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.book-info {
+    flex-grow: 1;
+}
+
+.book-info h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.book-info p {
+    margin: 3px 0;
+}
+
+button,
+input[type="submit"] {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    background-color: #3366cc;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #254a99;
+}
+
+button:disabled,
+input[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: default;
+}
+
+form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    max-width: 500px;
+}
+
+.form-row {
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.book-detail {
+    display: flex;
+    gap: 20px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+.book-detail img {
+    width: 200px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.book-detail .info {
+    flex-grow: 1;
+}
+
+.book-detail .info p {
+    margin: 6px 0;
+}
+
+.detail-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+nav {
+    background: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+nav a {
+    text-decoration: none;
+    color: #3366cc;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #e6f0ff;
+}
+
+.book-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.book-card {
+    text-decoration: none;    /* remove underline */
+    color: inherit;           /* keep text color normal */
+}
+
+.book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.book-card {
+    cursor: pointer;
+}
+
+.sort-links a {
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #3366cc;
+    font-weight: 500;
+    margin: 0 2px;
+}
+
+.sort-links a.active-sort {
+    background-color: #3366cc;
+    color: #ffffff;
+}
+
+/* Search bar container */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Search input */
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Search button */
+.search-bar button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #3366cc;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+    background-color: #254a99;
+}

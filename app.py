@@ -44,7 +44,13 @@ def home():
     if search_query and not books:
         message = f"No books found matching '{search_query}'."
 
-    return render_template("home.html", books=books, message=message)
+    return render_template(
+        "home.html",
+        books=books,
+        message=message,
+        sort_option=sort_option,
+        search_query=search_query,
+    )
 
 
 @app.route("/add_author", methods=["GET", "POST"])

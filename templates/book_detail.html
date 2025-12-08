@@ -9,34 +9,50 @@
 
   <body>
 
+    <header>
+        <h1>📚 My Digital Library</h1>
+    </header>
+
     <nav>
         <a href="/">Home</a>
         <a href="/add_author">Add Author</a>
         <a href="/add_book">Add Book</a>
         <a href="/suggest">AI Suggestion</a>
     </nav>
-    <hr>
 
-    <div class="book-card">
+    <div class="book-detail">
 
-        <h1>{{ book.title }}</h1>
-        <p><strong>Author:</strong> {{ book.author.name }}</p>
+  {% if book.isbn %}
+    <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg" alt="Cover">
+  {% endif %}
 
-        {% if book.isbn %}
-        <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg"
-             alt="Cover"
-             style="height:200px; margin-bottom: 15px;">
-        {% endif %}
+  <div class="info">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author.name }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn or "Unknown" }}</p>
+    <p><strong>Publication Year:</strong> {{ book.publication_year or "Unknown" }}</p>
+    <p><strong>Rating:</strong> {{ book.rating or "Not rated" }}/10</p>
 
-        <p><strong>ISBN:</strong> {{ book.isbn or "Unknown" }}</p>
-        <p><strong>Publication Year:</strong> {{ book.publication_year or "Unknown" }}</p>
-        <p><strong>Rating:</strong> {{ book.rating or "Not rated" }}/10</p>
+    <div class="detail-buttons">
+      <form
+        action="/book/{{ book.id }}/delete"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this book?');">
+        <button type="submit">Delete Book</button>
+      </form>
 
-        <br><br>
-        <a href="/">⬅ Back to Library</a>
-
-        <div style="clear: both;"></div>
+      <form
+        action="/author/{{ book.author.id }}/delete"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this author and ALL their books?');">
+        <button type="submit">Delete Author</button>
+      </form>
     </div>
+
+    <a href="/">⬅ Back to Library</a>
+  </div>
+
+</div>
 
   </body>
 </html>

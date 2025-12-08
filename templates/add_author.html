@@ -10,13 +10,16 @@
 
   <body>
 
+    <header>
+        <h1>📚 My Digital Library</h1>
+    </header>
+
     <nav>
         <a href="/">Home</a>
         <a href="/add_author">Add Author</a>
         <a href="/add_book">Add Book</a>
         <a href="/suggest">AI Suggestion</a>
     </nav>
-    <hr>
 
     {% if message %}
       <p>{{ message }}</p>
@@ -24,21 +27,24 @@
 
     <form action="/add_author" method="POST">
 
-      <label for="name">Author Name:</label>
-      <input type="text" id="name" name="name" required>
-      <br><br>
+  <div class="form-row">
+    <label for="name">Author Name:</label>
+    <input type="text" id="name" name="name" required>
+  </div>
 
-      <label for="birthdate">Birthdate:</label>
-      <input type="date" id="birthdate" name="birthdate" required>
-      <br><br>
+  <div class="form-row">
+    <label for="birthdate">Birthdate:</label>
+    <input type="date" id="birthdate" name="birthdate" required>
+  </div>
 
-      <label for="date_of_death">Date of Death:</label>
-      <input type="date" id="date_of_death" name="date_of_death">
-      <br><br>
+  <div class="form-row">
+    <label for="date_of_death">Date of Death:</label>
+    <input type="date" id="date_of_death" name="date_of_death">
+  </div>
 
-      <input type="submit" value="Add Author">
+  <input type="submit" value="Add Author">
 
-    </form>
+</form>
 
   </body>
 </html>
