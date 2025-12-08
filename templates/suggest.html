@@ -18,12 +18,17 @@
   <a href="/suggest">AI Suggestion</a>
 </nav>
 
-<div class="book-card">
-    <h2>Book Recommendation</h2>
-    <p>{{ suggestion }}</p>
+<div class="suggestion-wrapper">
+  <div class="suggestion-card">
+      <h2>Book Recommendation</h2>
+      <div class="markdown-content">
+          {{ suggestion|safe }}
+      </div>
+  </div>
+</div>
 
-    <br>
-    <a href="/">⬅ Back to Library</a>
+<div class="back-btn-container">
+    <a class="back-btn" href="/">⬅ Back to Library</a>
 </div>
 
 </body>

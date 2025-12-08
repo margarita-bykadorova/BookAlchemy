@@ -1,9 +1,12 @@
 """Flask application for a simple digital library."""
 
-import openai
 import os
+
 from dotenv import load_dotenv
+from openai import OpenAI
+
 load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -159,29 +162,34 @@ def book_detail(book_id):
 
 
 @app.route("/suggest")
-def suggest_book():
+def suggest():
+    """Generate a book recommendation using the AI model."""
     books = Book.query.all()
     titles = [book.title for book in books]
 
-    if not titles:
-        return render_template("suggest.html", suggestion="Your library is empty!")
+    if not books:
+        suggestion = "Add some books first so I can recommend something!"
+        return render_template("suggest.html", suggestion=suggestion)
 
-    # Prepare the prompt
     prompt = (
-        "I have read the following books:\n"
-        + "\n".join(f"- {title}" for title in titles)
-        + "\n\nPlease recommend one book I should read next and explain why."
+        "Based on the following books, recommend ONE book. "
+        "Use headings, bold, bullet points, and markdown formatting. "
+        "Books: " + ", ".join(titles)
     )
 
-    # Call AI API
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=prompt
     )
 
-    suggestion = response.choices[0].message.content
-    return render_template("suggest.html", suggestion=suggestion)
+    import markdown
+    suggestion_md = response.output_text
+    suggestion_html = markdown.markdown(suggestion_md)
+
+    return render_template(
+        "suggest.html",
+        suggestion=suggestion_html  # send HTML instead of plain text
+    )
 
 
 with app.app_context():

@@ -3,7 +3,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f6f7fb;
+    background: linear-gradient(to bottom, #f6f7fb, #eef1f7);
     color: #222;
 }
 
@@ -290,3 +290,86 @@ nav a:hover {
 .search-bar button:hover {
     background-color: #254a99;
 }
+
+.suggest-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.suggestion-card {
+    max-width: 650px;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background-color: #3366cc;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-button:hover {
+    background-color: #254a99;
+}
+
+.suggestion-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.suggestion-card {
+    width: 700px;
+    max-width: 90%;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    line-height: 1.6;
+}
+
+.back-btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-btn {
+    display: inline-block;
+    background-color: #3366cc;
+    padding: 10px 16px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background-color: #254a99;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    margin-top: 15px;
+    color: #333;
+}
+
+.markdown-content p {
+    line-height: 1.6;
+}
+
+.markdown-content ul {
+    margin: 10px 0 10px 20px;
+}
+
+.markdown-content li {
+    margin-bottom: 6px;
+}
+
