@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Suggestion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/add_author">Add Author</a>
+  <a href="/add_book">Add Book</a>
+  <a href="/suggest">AI Suggestion</a>
+</nav>
+<hr>
+
+<div class="book-card">
+    <h2>Book Recommendation</h2>
+    <p>{{ suggestion }}</p>
+
+    <br>
+    <a href="/">⬅ Back to Library</a>
+</div>
+
+</body>
+</html>

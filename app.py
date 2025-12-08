@@ -1,6 +1,9 @@
 """Flask application for a simple digital library."""
 
+import openai
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -147,6 +150,32 @@ def book_detail(book_id):
     """Render a detail page for a single book."""
     book = Book.query.get_or_404(book_id)
     return render_template("book_detail.html", book=book)
+
+
+@app.route("/suggest")
+def suggest_book():
+    books = Book.query.all()
+    titles = [book.title for book in books]
+
+    if not titles:
+        return render_template("suggest.html", suggestion="Your library is empty!")
+
+    # Prepare the prompt
+    prompt = (
+        "I have read the following books:\n"
+        + "\n".join(f"- {title}" for title in titles)
+        + "\n\nPlease recommend one book I should read next and explain why."
+    )
+
+    # Call AI API
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    suggestion = response.choices[0].message.content
+    return render_template("suggest.html", suggestion=suggestion)
 
 
 with app.app_context():
