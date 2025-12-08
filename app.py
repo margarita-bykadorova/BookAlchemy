@@ -77,6 +77,7 @@ def add_book():
         title = request.form["title"].strip()
         isbn = request.form["isbn"].strip()
         publication_year = request.form["publication_year"]
+        rating = request.form.get("rating")  # may be empty
         author_id = request.form["author_id"]
 
         # Check for duplicate ISBN
@@ -91,6 +92,7 @@ def add_book():
             title=title,
             isbn=isbn,
             publication_year=publication_year,
+            rating=rating,
             author_id=author_id
         )
 

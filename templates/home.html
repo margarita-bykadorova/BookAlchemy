@@ -43,9 +43,13 @@
         {% endif %}
 
         <h3>
-          <a href="/book/{{ book.id }}">{{ book.title }}</a>
-          — {{ book.author.name }}
+            <a href="/book/{{ book.id }}">{{ book.title }}</a>
+            — {{ book.author.name }}
         </h3>
+
+          {% if book.rating %}
+            <p><strong>Rating:</strong> {{ book.rating }}/10</p>
+          {% endif %}
 
         <!-- Delete Author -->
         <form action="/author/{{ book.author.id }}/delete"

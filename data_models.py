@@ -34,6 +34,7 @@ class Book(db.Model):
     isbn = db.Column(db.String(20), nullable=False, unique=True)
     title = db.Column(db.String(200), nullable=False)
     publication_year = db.Column(db.Integer)
+    rating = db.Column(db.Integer)  # 1–10 rating
     author_id = db.Column(
         db.Integer,
         db.ForeignKey("author.id"),
