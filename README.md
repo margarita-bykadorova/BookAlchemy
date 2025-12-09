@@ -2,97 +2,99 @@
 
 This project is a simple digital library built with **Flask** and
 **Flask-SQLAlchemy**.\
-Users can add authors, add books, view book details, search and sort
-books, and delete both books and authors.
+Users can add authors, add books with covers, rate books, delete entries, search, sort, and get AI-powered book recommendations.
+
+![App Screenshot](docs/screenshot2.png)
 
 ------------------------------------------------------------------------
 
-## Features
+## ✨ Features
 
-### 📚 Book Management
+### ✅ Core functionality  
+- Add authors (with birth & death dates)  
+- Add books (title, ISBN, year, rating, cover via OpenLibrary)  
+- Search books by title  
+- Sort by title or author  
+- View detailed book pages  
+- Delete a book or delete an author with all of their books  
+- Fully styled UI with responsive book cards  
 
--   Add new books with:
-    -   Title
-    -   ISBN (optional)
-    -   Publication year
-    -   Linked author
--   View list of all books
--   View details of each book
--   Delete a book
--   Covers displayed using OpenLibrary when ISBN is available
+### 🤖 Bonus: AI Suggestion  
+Get a smart book recommendation based on all books currently in your library.  
+Uses Markdown → rendered beautifully in HTML.
 
-------------------------------------------------------------------------
+---
 
-## ✍️ Author Management
+## 🖼 AI suggestion example:  
+![App Screenshot](docs/screenshot1.png)
 
--   Add authors with:
-    -   Name
-    -   Birth date
-    -   Date of death (optional)
--   Delete an author
-    -   Automatically deletes all books written by that author
+---
 
-------------------------------------------------------------------------
+## 🚀 Running the App
 
-## 🔍 Search & Sort
+### 1. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
--   Search books by title
--   Sort books by:
-    -   Title
-    -   Author name
+### 2. Create the database folder
+```bash
+mkdir -p data
+```
 
-------------------------------------------------------------------------
+### 3. Set your OpenAI key in `.env`:
 
-## 🧱 Technical Overview
+```
+OPENAI_API_KEY=your_key_here
+```
 
-### Technologies Used
 
--   Python 3
--   Flask
--   Flask-SQLAlchemy
--   SQLite
--   Jinja2 templating
--   OpenLibrary Covers API (for displaying book covers)
+### 4. Run the application
+```bash
+python app.py
+```
 
-### Project Structure
+### 5. Open in browser
+```
+http://127.0.0.1:5000
+```
 
+---
+
+## 🔧 Tech Stack
+- Python 3  
+- Flask  
+- Flask-SQLAlchemy  
+- OpenLibrary Cover API  
+- OpenAI GPT 
+
+---
+
+## 📁 Project Structure
+```
     project/
     │── app.py
     │── data_models.py
     │── data/
     │   └── library.sqlite
+    │── static/
+    │   └── styles.css
     │── templates/
     │   ├── home.html
     │   ├── add_author.html
     │   ├── add_book.html
-    │   └── book_detail.html
+    │   ├── book_detail.html
+    │   └── suggest.html
     └── README.md
+```
 
-------------------------------------------------------------------------
+---
 
-## ▶️ Running the App
-
-### 1. Install dependencies
-
-    pip install flask flask_sqlalchemy
-
-### 2. Run the Flask server
-
-    python app.py
-
-### 3. Open in browser
-
-    http://127.0.0.1:5000/
-
-------------------------------------------------------------------------
-
-## 📝 Notes
-
--   The SQLite database (`library.sqlite`) is ignored in Git for
-    cleanliness.
--   The app automatically initializes the database tables on startup.
--   For ISBN-based cover images, OpenLibrary returns a cover *only if
-    available for that ISBN*.
+## 💡 Notes
+- ISBN must be unique  
+- Author names must be unique  
+- If an author loses all books, they are deleted automatically  
+- Delete operations include confirmation prompts  
 
 ------------------------------------------------------------------------
 
@@ -101,8 +103,6 @@ books, and delete both books and authors.
 Feel free to expand the project with additional features such as: 
 - API-based ISBN auto-fill
 - UI improvements
-- Book ratings
-- AI-powered book recommendations
 
 ---
 
