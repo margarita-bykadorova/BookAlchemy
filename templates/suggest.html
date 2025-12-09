@@ -5,26 +5,28 @@
     <title>Book Suggestion</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
 
-    <header>
-        <h1>📚 My Digital Library</h1>
-    </header>
+<header>
+    <h1>📚 My Digital Library</h1>
+</header>
 
 <nav>
-  <a href="/">Home</a>
-  <a href="/add_author">Add Author</a>
-  <a href="/add_book">Add Book</a>
-  <a href="/suggest">AI Suggestion</a>
+    <a href="/">Home</a>
+    <a href="/add_author">Add Author</a>
+    <a href="/add_book">Add Book</a>
+    <a href="/suggest">AI Suggestion</a>
 </nav>
 
 <div class="suggestion-wrapper">
-  <div class="suggestion-card">
-      <h2>Book Recommendation</h2>
-      <div class="markdown-content">
-          {{ suggestion|safe }}
-      </div>
-  </div>
+    <div class="suggestion-card">
+        <h2>Book Recommendation</h2>
+
+        <div class="markdown-content">
+            {{ suggestion|safe }}
+        </div>
+    </div>
 </div>
 
 <div class="back-btn-container">

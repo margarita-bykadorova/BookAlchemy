@@ -2,29 +2,35 @@
 
 import os
 
+import markdown
 from dotenv import load_dotenv
 from openai import OpenAI
-
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 from flask import Flask, render_template, request, redirect, url_for
 
 from data_models import db, Author, Book
 
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 app = Flask(__name__)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = f"sqlite:///{os.path.join(basedir, 'data/library.sqlite')}"
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"sqlite:///{os.path.join(BASEDIR, 'data/library.sqlite')}"
+)
 
 db.init_app(app)
 
 
 @app.route("/")
 def home():
-    """Render the home page with optional search and sorting."""
+    """
+    Render the home page with optional search and sorting.
+
+    Supports:
+    - search by book title (case-insensitive)
+    - sorting by title or author name
+    """
     search_query = request.args.get("search")
     sort_option = request.args.get("sort")
     message = request.args.get("message")
@@ -58,6 +64,12 @@ def home():
 
 @app.route("/add_author", methods=["GET", "POST"])
 def add_author():
+    """
+    Add a new author to the library.
+
+    GET: render the author form.
+    POST: create a new Author if the name is unique.
+    """
     if request.method == "POST":
         name = request.form["name"].strip()
         birth_date = request.form["birthdate"]
@@ -72,7 +84,7 @@ def add_author():
         new_author = Author(
             name=name,
             birth_date=birth_date,
-            date_of_death=date_of_death
+            date_of_death=date_of_death,
         )
         db.session.add(new_author)
         db.session.commit()
@@ -85,11 +97,17 @@ def add_author():
 
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
+    """
+    Add a new book to the library.
+
+    GET: render the book form.
+    POST: create a new Book if ISBN is unique (when provided).
+    """
     if request.method == "POST":
         title = request.form["title"].strip()
         isbn = request.form["isbn"].strip()
-        publication_year = request.form["publication_year"]
-        rating = request.form.get("rating")  # may be empty
+        publication_year = request.form["publication_year"] or None
+        rating = request.form.get("rating") or None
         author_id = request.form["author_id"]
 
         # Check for duplicate ISBN
@@ -98,22 +116,29 @@ def add_book():
             if existing_book:
                 authors = Author.query.all()
                 message = f"A book with ISBN {isbn} already exists."
-                return render_template("add_book.html", authors=authors, message=message)
+                return render_template(
+                    "add_book.html",
+                    authors=authors,
+                    message=message,
+                )
 
         new_book = Book(
             title=title,
-            isbn=isbn,
+            isbn=isbn or None,
             publication_year=publication_year,
             rating=rating,
-            author_id=author_id
+            author_id=author_id,
         )
-
         db.session.add(new_book)
         db.session.commit()
 
         message = "Book added successfully!"
         authors = Author.query.all()
-        return render_template("add_book.html", authors=authors, message=message)
+        return render_template(
+            "add_book.html",
+            authors=authors,
+            message=message,
+        )
 
     authors = Author.query.all()
     return render_template("add_book.html", authors=authors)
@@ -121,15 +146,20 @@ def add_book():
 
 @app.route("/book/<int:book_id>/delete", methods=["POST"])
 def delete_book(book_id):
-    """Delete a book, and optionally its author if they have no other books."""
+    """
+    Delete a single book.
+
+    If the book's author has no remaining books afterwards,
+    the author is deleted as well.
+    """
     book = Book.query.get_or_404(book_id)
-    author = book.author  # Save for later check
+    author = book.author
 
     db.session.delete(book)
     db.session.commit()
 
     # If the author has no more books, delete the author too
-    if len(author.books) == 0:
+    if not author.books:
         db.session.delete(author)
         db.session.commit()
 
@@ -139,14 +169,17 @@ def delete_book(book_id):
 
 @app.route("/author/<int:author_id>/delete", methods=["POST"])
 def delete_author(author_id):
-    """Delete an author and all of their books."""
+    """
+    Delete an author and all of their books.
+
+    This is a cascading delete implemented in Python code.
+    """
     author = Author.query.get_or_404(author_id)
 
     # Delete all books by this author
     for book in author.books:
         db.session.delete(book)
 
-    # Delete the author
     db.session.delete(author)
     db.session.commit()
 
@@ -163,7 +196,13 @@ def book_detail(book_id):
 
 @app.route("/suggest")
 def suggest():
-    """Generate a book recommendation using the AI model."""
+    """
+    Generate a book recommendation using the AI model.
+
+    Uses the list of books in the library as context and
+    returns a markdown-formatted recommendation, which is
+    rendered as HTML on the suggestion page.
+    """
     books = Book.query.all()
     titles = [book.title for book in books]
 
@@ -171,24 +210,35 @@ def suggest():
         suggestion = "Add some books first so I can recommend something!"
         return render_template("suggest.html", suggestion=suggestion)
 
+    # Show only a few books in the visible intro text
+    preview_titles = titles[:5]  # first five books
+    preview_list = ", ".join(preview_titles)
+
     prompt = (
-        "Based on the following books, recommend ONE book. "
-        "Use headings, bold, bullet points, and markdown formatting. "
-        "Books: " + ", ".join(titles)
+        "The user has read many books. Here is the FULL list:\n"
+        f"{', '.join(titles)}\n\n"
+
+        "Recommend ONE new book that is NOT in the list above.\n"
+        "The output should still reference the user's taste, but "
+        f"only mention these few example titles in the intro: {preview_list}.\n\n"
+
+        "Start the answer with:\n"
+        f"'Based on your interest in {preview_list}, I recommend:'\n\n"
+
+        "Use headings, bold text, bullet points, and clean markdown formatting."
     )
 
     response = client.responses.create(
         model="gpt-4.1-mini",
-        input=prompt
+        input=prompt,
     )
 
-    import markdown
     suggestion_md = response.output_text
     suggestion_html = markdown.markdown(suggestion_md)
 
     return render_template(
         "suggest.html",
-        suggestion=suggestion_html  # send HTML instead of plain text
+        suggestion=suggestion_html,
     )
 
 

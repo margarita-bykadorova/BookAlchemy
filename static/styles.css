@@ -7,67 +7,14 @@ body {
     color: #222;
 }
 
-h1, h2, h3 {
+/* Headings */
+h1,
+h2,
+h3 {
     color: #333;
 }
 
-nav {
-    margin-bottom: 20px;
-}
-
-nav a {
-    margin-right: 10px;
-    text-decoration: none;
-    color: #3366cc;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-.book-card {
-    background: #ffffff;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.book-card img {
-    float: left;
-    margin-right: 15px;
-    border-radius: 4px;
-}
-
-button,
-input[type="submit"] {
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #3366cc;
-    background-color: #3366cc;
-    color: #fff;
-    cursor: pointer;
-}
-
-button:hover,
-input[type="submit"]:hover {
-    background-color: #254a99;
-}
-
-form label {
-    display: inline-block;
-    width: 140px;
-    margin-bottom: 5px;
-}
-
-.message {
-    padding: 8px 12px;
-    background-color: #e6f3ff;
-    border: 1px solid #b3d7ff;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
+/* Header */
 header {
     text-align: center;
     margin-bottom: 20px;
@@ -77,9 +24,51 @@ header {
 header h1 {
     font-size: 32px;
     margin: 0;
-    color: #333;
 }
 
+/* Navigation */
+nav {
+    background: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+nav a {
+    text-decoration: none;
+    color: #3366cc;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #e6f0ff;
+}
+
+/* Flash / info messages */
+.message {
+    padding: 8px 12px;
+    background-color: #e6f3ff;
+    border: 1px solid #b3d7ff;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* Book grid on home page */
+.book-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Book card (clickable) */
 .book-card {
     display: flex;
     flex-direction: column;   /* poster on top, text below */
@@ -92,14 +81,18 @@ header h1 {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
     width: 220px;             /* consistent card width */
     text-align: center;
+    text-decoration: none;    /* remove link underline */
+    color: inherit;           /* keep normal text color */
+    cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .book-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
 }
 
+/* Book cover inside card */
 .book-card img {
     width: 130px;
     height: 190px;
@@ -107,6 +100,7 @@ header h1 {
     object-fit: cover;
 }
 
+/* Text inside card */
 .book-info {
     flex-grow: 1;
 }
@@ -120,6 +114,7 @@ header h1 {
     margin: 3px 0;
 }
 
+/* Buttons (global) */
 button,
 input[type="submit"] {
     padding: 8px 14px;
@@ -143,11 +138,12 @@ input[type="submit"]:disabled {
     cursor: default;
 }
 
+/* Forms */
 form {
     background: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     max-width: 500px;
 }
 
@@ -170,13 +166,14 @@ form {
     font-size: 14px;
 }
 
+/* Book detail page */
 .book-detail {
     display: flex;
     gap: 20px;
     background: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
     margin-top: 20px;
 }
 
@@ -200,51 +197,7 @@ form {
     gap: 10px;
 }
 
-nav {
-    background: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-nav a {
-    text-decoration: none;
-    color: #3366cc;
-    font-weight: 500;
-    font-size: 15px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease;
-}
-
-nav a:hover {
-    background-color: #e6f0ff;
-}
-
-.book-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-}
-
-.book-card {
-    text-decoration: none;    /* remove underline */
-    color: inherit;           /* keep text color normal */
-}
-
-.book-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-}
-
-.book-card {
-    cursor: pointer;
-}
-
+/* Sort links on home page */
 .sort-links a {
     padding: 4px 10px;
     border-radius: 999px;
@@ -259,14 +212,13 @@ nav a:hover {
     color: #ffffff;
 }
 
-/* Search bar container */
+/* Search bar */
 .search-bar {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
 }
 
-/* Search input */
 .search-bar input[type="text"] {
     flex: 1;
     padding: 10px 14px;
@@ -275,7 +227,6 @@ nav a:hover {
     font-size: 14px;
 }
 
-/* Search button */
 .search-bar button {
     padding: 10px 16px;
     border-radius: 8px;
@@ -291,34 +242,7 @@ nav a:hover {
     background-color: #254a99;
 }
 
-.suggest-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.suggestion-card {
-    max-width: 650px;
-    text-align: left;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.back-button {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 8px 14px;
-    border-radius: 6px;
-    background-color: #3366cc;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.back-button:hover {
-    background-color: #254a99;
-}
-
+/* Suggestion page layout */
 .suggestion-wrapper {
     display: flex;
     justify-content: center;
@@ -331,10 +255,11 @@ nav a:hover {
     padding: 25px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     line-height: 1.6;
 }
 
+/* Back button (used on detail + suggest pages) */
 .back-btn-container {
     text-align: center;
     margin-top: 20px;
@@ -354,6 +279,7 @@ nav a:hover {
     background-color: #254a99;
 }
 
+/* Markdown styling in suggestion content */
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3 {
@@ -372,4 +298,3 @@ nav a:hover {
 .markdown-content li {
     margin-bottom: 6px;
 }
-

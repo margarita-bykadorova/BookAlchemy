@@ -1,79 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Library</title>
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-    <header>
-        <h1>📚 My Digital Library</h1>
-    </header>
+<body>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="/add_author">Add Author</a>
-        <a href="/add_book">Add Book</a>
-        <a href="/suggest">AI Suggestion</a>
-    </nav>
+<header>
+    <h1>📚 My Digital Library</h1>
+</header>
 
-    <!-- Search Form -->
-    <form action="/" method="GET" class="search-bar">
-      <input
-  type="text"
-  name="search"
-  placeholder="Search books..."
-  value="{{ search_query or '' }}"
->
-      <button type="submit">Search</button>
-    </form>
+<nav>
+    <a href="/">Home</a>
+    <a href="/add_author">Add Author</a>
+    <a href="/add_book">Add Book</a>
+    <a href="/suggest">AI Suggestion</a>
+</nav>
 
-    <br>
+<!-- Search Form -->
+<form action="/" method="GET" class="search-bar">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search books..."
+        value="{{ search_query or '' }}"
+    >
+    <button type="submit">Search</button>
+</form>
 
-    <!-- Sorting Links -->
-    <p class="sort-links">
-  Sort by:
-  <a
-    href="/?sort=title"
-    class="{% if sort_option == 'title' %}active-sort{% endif %}"
-  >
-    Title
-  </a>
-  |
-  <a
-    href="/?sort=author"
-    class="{% if sort_option == 'author' %}active-sort{% endif %}"
-  >
-    Author
-  </a>
+<!-- Sorting Links -->
+<p class="sort-links">
+    Sort by:
+    <a href="/?sort=title"
+       class="{% if sort_option == 'title' %}active-sort{% endif %}">
+        Title
+    </a>
+    |
+    <a href="/?sort=author"
+       class="{% if sort_option == 'author' %}active-sort{% endif %}">
+        Author
+    </a>
 </p>
 
-    <!-- Messages -->
-    {% if message %}
-      <p>{{ message }}</p>
-    {% endif %}
+<!-- Messages -->
+{% if message %}
+    <p class="message">{{ message }}</p>
+{% endif %}
 
+<!-- Book List -->
+<div class="book-grid">
+    {% for book in books %}
+        <a href="/book/{{ book.id }}" class="book-card">
 
-    <!-- List of Books -->
-    <div class="book-grid">
-      {% for book in books %}
-      <a href="/book/{{ book.id }}" class="book-card">
+            {% if book.isbn %}
+                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                     alt="Cover">
+            {% endif %}
 
-  {% if book.isbn %}
-    <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover">
-  {% endif %}
+            <div class="book-info">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.author.name }}</p>
+            </div>
 
-  <div class="book-info">
-    <h3>{{ book.title }}</h3>
-    <p>{{ book.author.name }}</p>
-  </div>
+        </a>
+    {% endfor %}
+</div>
 
-</a>
-      {% endfor %}
-    </div>
-
-  </body>
+</body>
 </html>
