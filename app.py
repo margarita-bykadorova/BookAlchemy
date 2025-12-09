@@ -10,7 +10,12 @@ from flask import Flask, render_template, request, redirect, url_for
 from data_models import db, Author, Book
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+try:
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+except TypeError:
+    # Environment (like Codio) may have incompatible httpx/openai combo
+    client = None
 
 app = Flask(__name__)
 
@@ -202,7 +207,19 @@ def suggest():
     Uses the list of books in the library as context and
     returns a markdown-formatted recommendation, which is
     rendered as HTML on the suggestion page.
+
+    Falls back to a simple message if the AI client is not available.
     """
+    if client is None:
+        return render_template(
+            "suggest.html",
+            suggestion=(
+                "AI suggestions are not available in this environment. "
+                "Please run the app locally with a valid OpenAI setup "
+                "to use this feature."
+            ),
+        )
+
     books = Book.query.all()
     titles = [book.title for book in books]
 
